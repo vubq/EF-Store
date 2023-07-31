@@ -1,6 +1,7 @@
 package ef.store.web.repositories.user;
 
 import ef.store.web.domains.User;
+import ef.store.web.entities.RoleEntity;
 import ef.store.web.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,7 +32,9 @@ public class DefaultUserRepository implements UserRepository {
     @Override
     @Transactional
     public User save(User domain) {
-        return this.jpaUserRepo.saveAndFlush(UserEntity.toEntity(domain)).toDomain();
+        UserEntity user = UserEntity.toEntity(domain);
+        user.setListRole(domain.getListRole().isEmpty() ? null : domain.getListRole().stream().map(RoleEntity::toEntity).collect(Collectors.toList()));
+        return this.jpaUserRepo.saveAndFlush(user).toDomain();
     }
 
     @Override
@@ -50,6 +53,11 @@ public class DefaultUserRepository implements UserRepository {
     @Transactional
     public Optional<User> findByEmail(String email) {
         return this.jpaUserRepo.findByEmail(email).map(UserEntity::toDomain);
+    }
+
+    @Override
+    public Optional<User> findByUserNameOrEmail(String userNameOrEmail) {
+        return this.jpaUserRepo.findByUserNameOrEmail(userNameOrEmail).map(UserEntity::toDomain);
     }
 
 }
