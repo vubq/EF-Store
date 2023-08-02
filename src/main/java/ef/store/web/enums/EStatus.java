@@ -1,6 +1,6 @@
 package ef.store.web.enums;
 
-public enum Status {
+public enum EStatus {
     ACTIVE,
     IN_ACTIVE
 }

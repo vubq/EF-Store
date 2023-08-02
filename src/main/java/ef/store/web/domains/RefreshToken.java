@@ -1,27 +1,23 @@
 package ef.store.web.domains;
 
-import ef.store.web.enums.TokenType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Token {
+public class RefreshToken {
 
     private String id;
 
-    private String token;
-
-    private TokenType tokenType;
-
-    private boolean revoked;
-
-    private boolean expired;
-
     private String userId;
 
+    private String token;
+
+    private Instant expiryDate;
 }

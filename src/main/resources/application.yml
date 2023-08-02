@@ -1,5 +1,5 @@
 server:
-  port: 7070
+  port: 8080
   http2:
     enabled: true
   compression:
@@ -15,7 +15,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
@@ -28,6 +28,10 @@ application:
   security:
     jwt:
       secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-      expiration: 86400000 # a day
+#      expiration: 86400000 # a day
+#      refresh-token:
+#        expiration: 604800000 # 7 days
+      #Test
+      expiration: 60000
       refresh-token:
-        expiration: 604800000 # 7 days
+        expiration: 180000

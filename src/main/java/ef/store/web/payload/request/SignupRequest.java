@@ -1,6 +1,6 @@
-package ef.store.web.domains;
+package ef.store.web.payload.request;
 
-import ef.store.web.entities.RoleEntity;
+import ef.store.web.domains.Role;
 import ef.store.web.enums.EStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class SignupRequest {
 
     private String id;
 
@@ -33,6 +33,6 @@ public class User {
 
     private EStatus status;
 
-    private Set<Role> roles;
+    private Set<String> roles;
 
 }

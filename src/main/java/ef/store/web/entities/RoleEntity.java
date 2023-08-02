@@ -1,13 +1,14 @@
 package ef.store.web.entities;
 
 import ef.store.web.domains.Role;
+import ef.store.web.enums.ERole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.eclipse.persistence.annotations.UuidGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 @Getter
 @Setter
@@ -21,15 +22,15 @@ public class RoleEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @UuidGenerator(name = "uuid")
+    @UuidGenerator
     @Basic(optional = false)
     @Column(name = "id")
     private String id;
 
+    @Enumerated(EnumType.STRING)
     @Basic(optional = false)
     @Column(name = "name")
-    private String name;
+    private ERole name;
 
     public Role toDomain() {
         return Role.builder()

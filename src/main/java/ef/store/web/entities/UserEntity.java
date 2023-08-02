@@ -1,7 +1,7 @@
 package ef.store.web.entities;
 
 import ef.store.web.domains.User;
-import ef.store.web.enums.Status;
+import ef.store.web.enums.EStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +10,11 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.eclipse.persistence.annotations.BatchFetch;
 import org.eclipse.persistence.annotations.BatchFetchType;
-import org.eclipse.persistence.annotations.UuidGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -27,15 +29,14 @@ public class UserEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @UuidGenerator(name = "uuid")
+    @UuidGenerator
     @Basic(optional = false)
     @Column(name = "id")
     private String id;
 
     @Basic(optional = false)
     @Column(name = "user_name")
-    private String userName;
+    private String username;
 
     @Basic(optional = false)
     @Column(name = "password")
@@ -59,7 +60,7 @@ public class UserEntity extends BaseEntity {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private EStatus status;
 
     @ManyToMany
     @JoinTable(
@@ -67,16 +68,12 @@ public class UserEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<RoleEntity> listRole;
-
-    @BatchFetch(value = BatchFetchType.IN)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<TokenEntity> listToken;
+    private Set<RoleEntity> roles = new HashSet<>();
 
     public User toDomain() {
         return User.builder()
                 .id(this.id)
-                .userName(this.userName)
+                .username(this.username)
                 .password(this.password)
                 .email(this.email)
                 .firstName(this.firstName)
@@ -84,15 +81,14 @@ public class UserEntity extends BaseEntity {
                 .phoneNumber(this.phoneNumber)
                 .address(this.address)
                 .status(this.status)
-                .listRole(this.listRole.stream().map(RoleEntity::toDomain).collect(Collectors.toList()))
-                .listToken(this.listToken.stream().map(TokenEntity::toDomain).collect(Collectors.toList()))
+                .roles(this.roles == null ? null : this.roles.stream().map(RoleEntity::toDomain).collect(Collectors.toSet()))
                 .build();
     }
 
     public static UserEntity toEntity(User domain) {
         return UserEntity.builder()
                 .id(domain.getId())
-                .userName(domain.getUserName())
+                .username(domain.getUsername())
                 .password(domain.getPassword())
                 .email(domain.getEmail())
                 .firstName(domain.getFirstName())
@@ -100,8 +96,7 @@ public class UserEntity extends BaseEntity {
                 .phoneNumber(domain.getPhoneNumber())
                 .address(domain.getAddress())
                 .status(domain.getStatus())
-//                .listRole(this.listRole.stream().map(RoleEntity::toDomain).collect(Collectors.toList()))
-//                .listToken(this.listToken.stream().map(TokenEntity::toDomain).collect(Collectors.toList()))
+                .roles(domain.getRoles().stream().map(RoleEntity::toEntity).collect(Collectors.toSet()))
                 .build();
     }
 

@@ -11,4 +11,8 @@ public interface UserService extends BaseService<User> {
 
     public User createNewAccount(User user);
 
+    public Boolean existsByUsername(String username);
+
+    public Boolean existsByEmail(String email);
+
 }

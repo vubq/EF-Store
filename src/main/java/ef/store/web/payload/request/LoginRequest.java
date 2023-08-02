@@ -1,6 +1,5 @@
-package ef.store.web.domains;
+package ef.store.web.payload.request;
 
-import ef.store.web.enums.ERole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+public class LoginRequest {
 
-    private String id;
+    private String username;
 
-    private ERole name;
+    private String password;
 
 }
